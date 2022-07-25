@@ -23,6 +23,14 @@ const (
 	MsgFeedCard
 )
 
+// VerifyType 验证类型
+type VerifyType uint8
+
+const (
+	VTKey VerifyType = 1 << iota
+	VTKeySign
+)
+
 const (
 	BtnOrientationCol uint8 = 0 // 按钮竖直排列
 	BtnOrientationRow uint8 = 1 // 按钮横向排列
