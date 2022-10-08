@@ -22,5 +22,7 @@ func TestGoDRText(t *testing.T) {
 	text.Text.Content = fmt.Sprintf("[%s]%s", currentCfg.Channel, "hello")
 	drClient.setAttrMsgContent(text)
 	err := drClient.Ding()
-	t.Error(err)
+	if err != nil {
+		t.Error(err)
+	}
 }
