@@ -1,4 +1,4 @@
-package go_ding
+package consts
 
 // DRType 钉钉机器人类型(DingRobot)
 type DRType uint8
@@ -21,6 +21,7 @@ const (
 	MsgMarkdown
 	MsgActionCard
 	MsgFeedCard
+	MsgEmpty
 )
 
 // VerifyType 验证类型

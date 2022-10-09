@@ -1,4 +1,4 @@
-package go_ding
+package src
 
 import (
 	"bytes"
@@ -8,6 +8,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/speauty/go.ding/src/consts"
+	"github.com/speauty/go.ding/src/types"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -15,15 +17,15 @@ import (
 )
 
 type Verify struct {
-	VerifyKey VerifyType
+	VerifyKey consts.VerifyType
 	VerifyVal string
 }
 
 type DRClient struct {
 	channel    string
 	webhook    string
-	drType     DRType
-	msgType    MsgType
+	drType     consts.DRType
+	msgType    consts.MsgType
 	Verify     *Verify
 	msgContent interface{}
 }
@@ -49,11 +51,11 @@ func (client *DRClient) setAttrWebHook(hook string) {
 	client.webhook = hook
 }
 
-func (client *DRClient) setAttrDRType(drType DRType) {
+func (client *DRClient) setAttrDRType(drType consts.DRType) {
 	client.drType = drType
 }
 
-func (client *DRClient) setAttrMsgType(msgType MsgType) {
+func (client *DRClient) setAttrMsgType(msgType consts.MsgType) {
 	client.msgType = msgType
 }
 
@@ -68,7 +70,7 @@ func (client *DRClient) setAttrVerify(verify *Verify) {
 func (client *DRClient) buildPostRequest() (*http.Request, error) {
 	body, _ := json.Marshal(client.msgContent)
 	queryStr := ""
-	if client.Verify.VerifyKey&VTKeySign == 1 {
+	if client.Verify.VerifyKey&consts.VTKeySign == 1 {
 		timestamp := time.Now().Unix()
 		str2Sign := fmt.Sprintf("%d\\n%s", timestamp, client.Verify.VerifyVal)
 		h := hmac.New(sha256.New, []byte("rr"))
@@ -95,7 +97,7 @@ func (client *DRClient) resp(resp *http.Response) error {
 }
 
 func (client *DRClient) dingResp(content []byte) error {
-	resStruct := &DRErr{}
+	resStruct := &types.DRErr{}
 
 	if err := json.Unmarshal(content, resStruct); err != nil {
 		return fmt.Errorf("DRClient::dingResp json.Unmarshal err:%s", err)
